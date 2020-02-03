@@ -26,6 +26,8 @@ jobs:
         yarn
         yarn build
         yarn test
+      env:
+        CI: true  
     - name: Deploy site to gh-pages branch
       uses: alex-page/blazing-fast-gh-pages-deploy@v1.1.0
       with:
