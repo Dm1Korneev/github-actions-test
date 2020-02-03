@@ -12,16 +12,6 @@ jobs:
         node-version: [10.x]
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+    - uses: Dm1Korneev/install-build-test-action
       with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install -g yarn
-    - name: yarn install, build, and test
-      run: |
-        yarn
-        yarn build
-        yarn test
-      env:
-        CI: true
+        node_version: ${{ matrix.node-version }}
