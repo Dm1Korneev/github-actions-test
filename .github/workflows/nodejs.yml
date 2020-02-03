@@ -5,13 +5,12 @@ on: [pull_request]
 jobs:
   build:
 
-    runs-on: ubuntu-latest
-
     strategy:
       matrix:
-        node-version: [10.x]
+        node: [10.x]
+        os: [ubuntu-latest]
+
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: Dm1Korneev/install-build-test-action@master
-      with:
-        node_version: ${{ matrix.node-version }}
