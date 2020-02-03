@@ -12,6 +12,6 @@ jobs:
         node-version: [10.x]
 
     steps:
-    - uses: Dm1Korneev/install-build-test-action
+    - uses: Dm1Korneev/install-build-test-action@master
       with:
         node_version: ${{ matrix.node-version }}
