@@ -19,7 +19,7 @@ jobs:
       with:
         node-version: ${{ inputs.node_version }}
     - name: 'Install yarn'
-    - run: npm install -g yarn
+      run: npm install -g yarn
     - name: 'Yarn: install, build, and test'
       run: |
         yarn
