@@ -1,4 +1,4 @@
-name: Blazing fast GitHub Pages deploy
+name: 'Deploy to GitHub pages'
 
 on:
   push:
@@ -7,28 +7,28 @@ on:
 
 jobs:
   deploy:
-    
-    runs-on: ubuntu-latest
-    
     strategy:
       matrix:
-        node-version: [10.x]
-    
+        node: [12.x]
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+        CI: true      
     steps:
     - uses: actions/checkout@master
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: 'Use Node.js ${{ matrix.node }}'
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install -g yarn
-    - name: yarn install, build, and test
-      run: |
-        yarn
-        yarn build
-        yarn test
-      env:
-        CI: true  
-    - name: Deploy site to gh-pages branch
+        node-version: ${{ matrix.node }}
+    - name: 'Install yarn'
+      run: npm install -g yarn
+    - name: 'Install dependencies'
+      run: yarn
+    - name: 'Build production build'
+      run: yarn build
+    - name: 'Run tests'
+      run: yarn test   
+    - name: 'Deploy to "gh-pages" branch'
       uses: alex-page/blazing-fast-gh-pages-deploy@v1.1.0
       with:
         repo-token: ${{ secrets.GH_PAT }}
