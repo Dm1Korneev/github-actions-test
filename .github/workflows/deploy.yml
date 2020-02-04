@@ -16,10 +16,10 @@ jobs:
         CI: true      
     steps:
     - uses: actions/checkout@master
-    - name: Set acess token
+    - name: Set access token
       run: git remote set-url origin https://$GITHUB_ACTOR:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY
-    - name: Set username
-      run: git config --global user.name ${{ env.GITHUB_ACTOR }}
+    - name: Set user name
+      run: git config --global user.name $GITHUB_ACTOR
     - name: 'Use Node.js ${{ matrix.node }}'
       uses: actions/setup-node@v1
       with:
