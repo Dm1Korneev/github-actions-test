@@ -1,5 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+![Deploy to GitHub pages](https://github.com/Dm1Korneev/github-actions-test/workflows/Deploy%20to%20GitHub%20pages/badge.svg?branch=master)
+
 ## Available Scripts
 
 In the project directory, you can run:
