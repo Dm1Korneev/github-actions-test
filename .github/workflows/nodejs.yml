@@ -1,4 +1,4 @@
-name: Node CI
+name: 'Test'
 
 on: [pull_request]
 
@@ -7,10 +7,23 @@ jobs:
 
     strategy:
       matrix:
-        node: [10.x]
+        node: [12.x]
         os: [ubuntu-latest]
 
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: Dm1Korneev/install-build-test-action@master
+    - uses: actions/checkout@v1
+    - name: 'Use Node.js ${{ inputs.node_version }}'
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ inputs.node_version }}
+    - name: 'Install yarn'
+    - run: npm install -g yarn
+    - name: 'Yarn: install, build, and test'
+      run: |
+        yarn
+        yarn build
+        yarn test
+      env:
+        CI: true
