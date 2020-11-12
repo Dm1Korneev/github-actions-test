@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
 const App: React.FC = () => {
+  const d = 5;
   throw new Error('Test')
 
   return (
