@@ -6,20 +6,16 @@ on:
     - master
 
 jobs:
-  deploy:
+  build:
     strategy:
       matrix:
         node: [12.x]
         os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     env:
-        CI: true      
+        CI: true
     steps:
-    - uses: actions/checkout@master
-    - name: Set access token
-      run: git remote set-url origin https://$GITHUB_ACTOR:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY
-    - name: Set user name
-      run: git config --global user.name $GITHUB_ACTOR
+    - uses: actions/checkout@v1
     - name: 'Use Node.js ${{ matrix.node }}'
       uses: actions/setup-node@v1
       with:
@@ -28,7 +24,7 @@ jobs:
       run: npm install -g yarn
     - name: 'Install dependencies'
       run: yarn
+    - name: 'Build production build'
+      run: yarn build
     - name: 'Run tests'
-      run: yarn test
-    - name: 'Deploy to "gh-pages" branch'
-      run: yarn deploy
+      run: yarn test     
