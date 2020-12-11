@@ -43,7 +43,7 @@ jobs:
         username: ${{ env.GITHUB_USERNAME }}
         password: ${{ secrets.GITHUB_TOKEN }}
         dockerfile: Dockerfile
-        tags: "latest,${{ env.GITHUB_SHA }}"
+        tags: "latest"
 
     - name: Deploy package to Digitalocean
       uses: appleboy/ssh-action@master
