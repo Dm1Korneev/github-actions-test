@@ -38,7 +38,7 @@ jobs:
     - name: Publish to Github Packages Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       env:
-        TAGS: "latest,${env.SHA7:7}"
+        TAGS: 'latest,${{env.SHA7:7}}'
       with:
         name: ${{ env.IMAGE_NAME }}
         registry: docker.pkg.github.com
