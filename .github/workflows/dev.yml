@@ -63,6 +63,9 @@ jobs:
           # Remove old container
           docker rm $(echo $IMAGE_NAME)
 
+          # Login
+          doctl registry login
+
           # Run a new container from a new image
           docker run -d \
           -p 4000:4000 \
