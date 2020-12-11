@@ -9,7 +9,6 @@ env:
   GITHUB_USERNAME: dm1korneev
   IMAGE_NAME: dm1korneev/github-actions-test/test-image-dm1korneev
   CI: true
-  TAGS: 'latest,${{ github.sha }}'
 
 jobs:
   build:
@@ -36,6 +35,10 @@ jobs:
       run: yarn server:build 
 
     # Build docker image
+    - name: Set outputs
+      id: vars
+      run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
     - name: Publish to Github Packages Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
@@ -44,7 +47,7 @@ jobs:
         username: ${{ env.GITHUB_USERNAME }}
         password: ${{ secrets.GITHUB_TOKEN }}
         dockerfile: Dockerfile
-        tags: ${{ env.TAGS }}
+        tags: ${{ steps.vars.outputs.sha_short }}
 
     - name: Deploy package to Digitalocean
       uses: appleboy/ssh-action@master
