@@ -37,15 +37,13 @@ jobs:
     # Build docker image
     - name: Publish to Github Packages Registry
       uses: elgohr/Publish-Docker-Github-Action@master
-      env:
-        TAGS: 'latest,${{env.GITHUB_SHA::7}}'
       with:
         name: ${{ env.IMAGE_NAME }}
         registry: docker.pkg.github.com
         username: ${{ env.GITHUB_USERNAME }}
         password: ${{ secrets.GITHUB_TOKEN }}
         dockerfile: Dockerfile
-        tags: ${{ env.TAGS }}
+        tags: 'latest,${{env.GITHUB_SHA}}'
 
     - name: Deploy package to Digitalocean
       uses: appleboy/ssh-action@master
