@@ -9,6 +9,7 @@ env:
   GITHUB_USERNAME: dm1korneev
   IMAGE_NAME: dm1korneev/github-actions-test/test-image-dm1korneev
   CI: true
+  SHORTSHA: $(git rev-parse --short=7 ${{ github.sha }})
 
 jobs:
   build:
@@ -37,15 +38,13 @@ jobs:
     # Build docker image
     - name: Publish to Github Packages Registry
       uses: elgohr/Publish-Docker-Github-Action@master
-      env:
-        SHA8: ${GITHUB_SHA:8}
       with:
         name: ${{ env.IMAGE_NAME }}
         registry: docker.pkg.github.com
         username: ${{ env.GITHUB_USERNAME }}
         password: ${{ secrets.GITHUB_TOKEN }}
         dockerfile: Dockerfile
-        tags: 'latest,${{env.SHA8}}'
+        tags: 'latest,${ env.SHORTSHA }'
 
     - name: Deploy package to Digitalocean
       uses: appleboy/ssh-action@master
