@@ -24,6 +24,8 @@ jobs:
       run: yarn
     - name: 'Build production build'
       run: yarn build
+    - name: 'Build server'
+      run: yarn server:build  
     - name: 'Run tests'
       run: yarn test     
   
