@@ -58,5 +58,5 @@ jobs:
         script: |
           docker stop $(docker ps -a -q)
           docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN
-          docker pull docker.pkg.github.com/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
-          docker run -dit -p 4000:4000 docker.pkg.github.com/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
+          docker pull docker.pkg.github.com/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA)
+          docker run -dit -p 4000:4000 docker.pkg.github.com/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA)
