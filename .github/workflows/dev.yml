@@ -6,6 +6,7 @@ on:
     - master
 
 env:
+  GITHUB_USERNAME: Dm1Korneev
   IMAGE_NAME: Dm1Korneev/github-actions-test/test-image-dm1korneev
   CI: true
 
@@ -39,7 +40,23 @@ jobs:
       with:
         name: ${{ env.IMAGE_NAME }}
         registry: docker.pkg.github.com
-        username: Dm1Korneev
+        username: ${{ env.GITHUB_USERNAME }}
         password: ${{ secrets.GITHUB_TOKEN }}
         dockerfile: Dockerfile
         tags: latest
+
+    - name: Deploy package to Digitalocean
+      uses: appleboy/ssh-action@master
+      env:
+          GITHUB_USERNAME: ${{ env.GITHUB_USERNAME }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        KEY: ${{ secrets.SSHKEY }}
+        envs: GITHUB_USERNAME, GITHUB_TOKEN
+        script: |
+          docker stop $(docker ps -a -q)
+          docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN
+          docker pull docker.pkg.github.com/${{ env.IMAGE_NAME }}:latest
+          docker run -dit -p 4000:4000 docker.pkg.github.com/${{ env.IMAGE_NAME }}:latest
