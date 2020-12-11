@@ -43,7 +43,7 @@ jobs:
         username: ${{ env.GITHUB_USERNAME }}
         password: ${{ secrets.GITHUB_TOKEN }}
         dockerfile: Dockerfile
-        tags: latest
+        tags: ${{ env.GITHUB_SHA }}
 
     - name: Deploy package to Digitalocean
       uses: appleboy/ssh-action@master
@@ -58,5 +58,5 @@ jobs:
         script: |
           docker stop $(docker ps -a -q)
           docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN
-          docker pull docker.pkg.github.com/${{ env.IMAGE_NAME }}:latest
-          docker run -dit -p 4000:4000 docker.pkg.github.com/${{ env.IMAGE_NAME }}:latest
+          docker pull docker.pkg.github.com/${{ env.IMAGE_NAME }}:${{ env.GITHUB_SHA }}
+          docker run -dit -p 4000:4000 docker.pkg.github.com/${{ env.IMAGE_NAME }}:${{ env.GITHUB_SHA }}
