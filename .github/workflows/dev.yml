@@ -37,7 +37,7 @@ jobs:
     - name: Publish to Github Packages Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        name: ${{ IMAGE_NAME }}
+        name: ${{ env.IMAGE_NAME }}
         registry: docker.pkg.github.com
         username: Dm1Korneev
         password: ${{ secrets.GITHUB_TOKEN }}
