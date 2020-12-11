@@ -6,8 +6,7 @@ on:
     - master
 
 env:
-  REGISTRY: "registry.digitalocean.com/test-container-dm1korneev"
-  IMAGE_NAME: test-image-dm1korneev
+  IMAGE_NAME: Dm1Korneev/github-actions-test/test-image-dm1korneev
   CI: true
 
 jobs:
@@ -35,39 +34,12 @@ jobs:
       run: yarn server:build 
 
     # Build docker image
-    - name: Build container image
-      run: docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
-
-    - name: Install doctl
-      uses: digitalocean/action-doctl@v2
+    - name: Publish to Github Packages Registry
+      uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-
-    - name: Log in to DigitalOcean Container Registry with short-lived credentials
-      run: doctl registry login --expiry-seconds 600
-
-    - name: Push image to DigitalOcean Container Registry
-      run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
-
-    - name: Deploy to Digital Ocean droplet via SSH action
-      uses: appleboy/ssh-action@master
-      with:
-        HOST: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        KEY: ${{ secrets.SSHKEY }}
-        envs: IMAGE_NAME,REGISTRY,GITHUB_SHA
-        script: |
-          # Stop running container
-          docker stop $(echo $IMAGE_NAME)
-
-          # Remove old container
-          docker rm $(echo $IMAGE_NAME)
-
-          # Login
-          doctl registry login
-
-          # Run a new container from a new image
-          docker run -d \
-          -p 4000:4000 \
-          --name $(echo $IMAGE_NAME) \
-          $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
+        name: $IMAGE_NAME
+        registry: docker.pkg.github.com
+        username: Dm1Korneev
+        password: ${{ secrets.GITHUB_TOKEN }}
+        dockerfile: Dockerfile-prod
+        tags: latest
