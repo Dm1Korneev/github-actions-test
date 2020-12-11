@@ -38,7 +38,7 @@ jobs:
     - name: Publish to Github Packages Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       env:
-        SHA8: ${GITHUB_SHA::8}
+        SHA8: ${GITHUB_SHA:8}
       with:
         name: ${{ env.IMAGE_NAME }}
         registry: docker.pkg.github.com
