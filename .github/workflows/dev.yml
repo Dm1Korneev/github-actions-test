@@ -13,6 +13,8 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_SHA_SHORT: ${GITHUB_SHA::8}
     steps:
     - name: Checkout master
       uses: actions/checkout@v1
@@ -43,7 +45,7 @@ jobs:
         username: ${{ env.GITHUB_USERNAME }}
         password: ${{ secrets.GITHUB_TOKEN }}
         dockerfile: Dockerfile
-        tags: "latest,$(echo $GITHUB_SHA | cut -c1-8)"
+        tags: "latest,${{ env.GITHUB_SHA_SHORT }}"
 
     - name: Deploy package to Digitalocean
       uses: appleboy/ssh-action@master
