@@ -6,6 +6,7 @@ on:
     - master
 
 env:
+  REGISTRY: docker.pkg.github.com
   GITHUB_USERNAME: dm1korneev
   IMAGE_NAME: dm1korneev/github-actions-test/test-image-dm1korneev
   CI: true
@@ -43,7 +44,7 @@ jobs:
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
         name: ${{ env.IMAGE_NAME }}
-        registry: docker.pkg.github.com
+        registry: ${{ env.REGISTRY }}
         username: ${{ env.GITHUB_USERNAME }}
         password: ${{ secrets.GITHUB_TOKEN }}
         dockerfile: Dockerfile
@@ -58,9 +59,9 @@ jobs:
         HOST: ${{ secrets.HOST }}
         USERNAME: ${{ secrets.USERNAME }}
         KEY: ${{ secrets.SSHKEY }}
-        envs: GITHUB_USERNAME, GITHUB_TOKEN, IMAGE_NAME, GITHUB_SHA
+        envs: GITHUB_USERNAME, GITHUB_TOKEN, IMAGE_NAME, GITHUB_SHA, REGISTRY
         script: |
           docker stop $(docker ps -a -q)
-          docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN
-          docker pull docker.pkg.github.com/${{ env.IMAGE_NAME }}:latest
-          docker run -dit -p 4000:4000 docker.pkg.github.com/${{ env.IMAGE_NAME }}:latest
+          docker login $REGISTRY -u $GITHUB_USERNAME -p $GITHUB_TOKEN
+          docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          docker run -dit -p 4000:4000 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
